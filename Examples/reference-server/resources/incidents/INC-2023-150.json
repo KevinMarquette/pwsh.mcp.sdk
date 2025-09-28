@@ -1,0 +1,31 @@
+{
+  "id": "INC-2023-150",
+  "title": "Unauthorized access attempt detected",
+  "type": "Security",
+  "severity": "Critical",
+  "status": "Resolved",
+  "reporter": "security-system",
+  "assignee": "Security Team",
+  "affectedServices": ["User Accounts", "Authentication"],
+  "createdAt": "2024-01-14T09:15:00Z",
+  "lastUpdated": "2024-01-14T12:30:00Z",
+  "resolvedAt": "2024-01-14T12:30:00Z",
+  "description": "Multiple failed login attempts detected from suspicious IP ranges. Potential brute force attack in progress.",
+  "notes": [
+    {
+      "timestamp": "2024-01-14T09:20:00Z",
+      "author": "Security Team",
+      "content": "Blocked suspicious IP ranges at firewall level"
+    },
+    {
+      "timestamp": "2024-01-14T10:15:00Z",
+      "author": "Security Team",
+      "content": "Implementing additional rate limiting on login endpoints"
+    },
+    {
+      "timestamp": "2024-01-14T12:30:00Z",
+      "author": "Security Team",
+      "content": "Attack stopped. Enhanced monitoring in place. No accounts compromised."
+    }
+  ]
+}

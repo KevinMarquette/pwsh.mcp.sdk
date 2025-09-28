@@ -1,0 +1,36 @@
+{
+  "escalationMatrix": {
+    "businessHours": {
+      "Low": ["Team Lead", "Department Manager"],
+      "Medium": ["Team Lead", "Department Manager", "Director"],
+      "High": ["Team Lead", "Department Manager", "Director", "VP Engineering"],
+      "Critical": ["Team Lead", "Department Manager", "Director", "VP Engineering", "CTO", "CEO"]
+    },
+    "afterHours": {
+      "Low": ["On-Call Engineer"],
+      "Medium": ["On-Call Engineer", "Team Lead"],
+      "High": ["On-Call Engineer", "Team Lead", "Department Manager"],
+      "Critical": ["On-Call Engineer", "Team Lead", "Department Manager", "VP Engineering", "CTO"]
+    }
+  },
+  "contactMethods": {
+    "Low": ["Email", "Slack"],
+    "Medium": ["Email", "Slack", "Phone"],
+    "High": ["Phone", "Email", "Slack", "SMS"],
+    "Critical": ["Phone", "SMS", "Email", "Slack", "Emergency Hotline"]
+  },
+  "responseWindows": {
+    "acknowledgment": {
+      "Low": "4 hours",
+      "Medium": "2 hours",
+      "High": "30 minutes",
+      "Critical": "15 minutes"
+    },
+    "initialResponse": {
+      "Low": "8 hours",
+      "Medium": "4 hours",
+      "High": "1 hour",
+      "Critical": "30 minutes"
+    }
+  }
+}

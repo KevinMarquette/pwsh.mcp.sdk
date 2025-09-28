@@ -1,0 +1,32 @@
+{
+  "severityLevels": [
+    {
+      "level": "Low",
+      "description": "Minor issues with minimal business impact",
+      "responseTime": "4 hours",
+      "escalationThreshold": "24 hours",
+      "notificationLevel": "Team Lead"
+    },
+    {
+      "level": "Medium",
+      "description": "Moderate issues affecting some users or services",
+      "responseTime": "2 hours",
+      "escalationThreshold": "8 hours",
+      "notificationLevel": "Management"
+    },
+    {
+      "level": "High",
+      "description": "Significant issues affecting many users or critical services",
+      "responseTime": "30 minutes",
+      "escalationThreshold": "2 hours",
+      "notificationLevel": "Senior Management"
+    },
+    {
+      "level": "Critical",
+      "description": "Service outage or security breach affecting all users",
+      "responseTime": "15 minutes",
+      "escalationThreshold": "1 hour",
+      "notificationLevel": "Executive Team"
+    }
+  ]
+}

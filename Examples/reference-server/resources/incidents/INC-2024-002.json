@@ -1,0 +1,25 @@
+{
+  "id": "INC-2024-002",
+  "title": "Intermittent 502 errors on API gateway",
+  "type": "Outage",
+  "severity": "Medium",
+  "status": "Investigating",
+  "reporter": "Sarah Johnson",
+  "assignee": "Sarah Johnson",
+  "affectedServices": ["API Gateway", "Mobile App"],
+  "createdAt": "2024-01-15T15:15:00Z",
+  "lastUpdated": "2024-01-15T16:50:00Z",
+  "description": "Mobile app users reporting intermittent 502 Bad Gateway errors when making API calls. Approximately 5% of requests are affected.",
+  "notes": [
+    {
+      "timestamp": "2024-01-15T15:20:00Z",
+      "author": "Sarah Johnson",
+      "content": "Reviewing load balancer logs and backend service health"
+    },
+    {
+      "timestamp": "2024-01-15T16:50:00Z",
+      "author": "Sarah Johnson",
+      "content": "Found one backend server returning 502s. Investigating root cause."
+    }
+  ]
+}

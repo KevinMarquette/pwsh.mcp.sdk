@@ -1,0 +1,30 @@
+{
+  "id": "INC-2024-001",
+  "title": "Database connection timeouts affecting user logins",
+  "type": "Performance",
+  "severity": "High",
+  "status": "In Progress",
+  "reporter": "system-monitor",
+  "assignee": "John Smith",
+  "affectedServices": ["Authentication", "User Portal"],
+  "createdAt": "2024-01-15T14:30:00Z",
+  "lastUpdated": "2024-01-15T16:15:00Z",
+  "description": "Users experiencing 30+ second delays when attempting to log in. Database connection pool appears to be exhausted during peak hours.",
+  "notes": [
+    {
+      "timestamp": "2024-01-15T14:35:00Z",
+      "author": "John Smith",
+      "content": "Initial investigation shows connection pool at 95% utilization"
+    },
+    {
+      "timestamp": "2024-01-15T15:20:00Z",
+      "author": "John Smith",
+      "content": "Scaling up database connection pool from 50 to 100 connections"
+    },
+    {
+      "timestamp": "2024-01-15T16:15:00Z",
+      "author": "John Smith",
+      "content": "Performance improved but still monitoring. May need to optimize slow queries."
+    }
+  ]
+}
