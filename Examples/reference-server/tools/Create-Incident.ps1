@@ -43,7 +43,7 @@ param(
     [Parameter()]
     [string[]]$AffectedServices = @(),
 
-    # Reporter's contact information
+    # Reporter's user name
     [Parameter()]
     [string]$Reporter = $env:USERNAME
 )

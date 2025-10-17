@@ -1,3 +1,7 @@
+---
+Title: Incident Management Best Practices
+---
+
 # Incident Management Best Practices
 
 ## Philosophy
