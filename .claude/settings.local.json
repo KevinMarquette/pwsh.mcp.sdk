@@ -1,7 +1,8 @@
 {
   "permissions": {
     "allow": [
-      "Bash(cmd.exe /c \"tree /F\")"
+      "Bash(cmd.exe /c \"tree /F\")",
+      "Bash(powershell.exe -NoProfile -Command \"Set-Location ''E:\\AI\\pwsh.mcp.sdk''; Invoke-Pester -Path ''Tests\\Private\\Get-ToolList.Tests.ps1'' -Output Detailed\")"
     ],
     "deny": [],
     "ask": []
