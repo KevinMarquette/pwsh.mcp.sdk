@@ -7,5 +7,5 @@ function Get-ToolList {
     param($MCPRoot)
 
     $tools = Get-ChildItem -Path "$MCPRoot/tools" -Filter '*.ps1' | Get-ToolSignature
-    return @{tools=@($tools)}
+    return @{tools = @($tools) }
 }

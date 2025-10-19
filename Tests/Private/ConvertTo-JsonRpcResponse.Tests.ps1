@@ -12,7 +12,7 @@ Describe 'ConvertTo-JsonRpcResponse' -Tag 'Unit' {
         It 'should include jsonrpc version 2.0' {
             InModuleScope MCP.SDK {
                 # Act
-                $result = ConvertTo-JsonRpcResponse -InputObject @{result = "test"} -ID 1
+                $result = ConvertTo-JsonRpcResponse -InputObject @{result = "test" } -ID 1
 
                 # Assert
                 $result.jsonrpc | Should -Be "2.0"
@@ -22,7 +22,7 @@ Describe 'ConvertTo-JsonRpcResponse' -Tag 'Unit' {
         It 'should include the provided ID' {
             InModuleScope MCP.SDK {
                 # Act
-                $result = ConvertTo-JsonRpcResponse -InputObject @{result = "test"} -ID 42
+                $result = ConvertTo-JsonRpcResponse -InputObject @{result = "test" } -ID 42
 
                 # Assert
                 $result.id | Should -Be 42
@@ -32,7 +32,7 @@ Describe 'ConvertTo-JsonRpcResponse' -Tag 'Unit' {
         It 'should return an ordered hashtable' {
             InModuleScope MCP.SDK {
                 # Act
-                $result = ConvertTo-JsonRpcResponse -InputObject @{result = "test"} -ID 1
+                $result = ConvertTo-JsonRpcResponse -InputObject @{result = "test" } -ID 1
 
                 # Assert
                 $result | Should -BeOfType [System.Collections.Specialized.OrderedDictionary]
@@ -42,7 +42,7 @@ Describe 'ConvertTo-JsonRpcResponse' -Tag 'Unit' {
         It 'should have jsonrpc and id as first keys' {
             InModuleScope MCP.SDK {
                 # Act
-                $result = ConvertTo-JsonRpcResponse -InputObject @{result = "test"} -ID 1
+                $result = ConvertTo-JsonRpcResponse -InputObject @{result = "test" } -ID 1
 
                 # Assert
                 $keys = @($result.Keys)
@@ -57,7 +57,7 @@ Describe 'ConvertTo-JsonRpcResponse' -Tag 'Unit' {
         It 'should use existing result property when present' {
             InModuleScope MCP.SDK {
                 # Arrange
-                $input = @{result = @{data = "test data"}}
+                $input = @{result = @{data = "test data" } }
 
                 # Act
                 $result = ConvertTo-JsonRpcResponse -InputObject $input -ID 1
@@ -72,7 +72,7 @@ Describe 'ConvertTo-JsonRpcResponse' -Tag 'Unit' {
             @{ InputType = 'string'; InputValue = "test string" }
             @{ InputType = 'integer'; InputValue = 42 }
             @{ InputType = 'boolean'; InputValue = $true }
-            @{ InputType = 'hashtable'; InputValue = @{key = "value"} }
+            @{ InputType = 'hashtable'; InputValue = @{key = "value" } }
             @{ InputType = 'array'; InputValue = @(1, 2, 3) }
         ) {
             InModuleScope MCP.SDK -Parameters @{ InputValue = $InputValue } {
@@ -89,7 +89,7 @@ Describe 'ConvertTo-JsonRpcResponse' -Tag 'Unit' {
         It 'should not include error property for normal results' {
             InModuleScope MCP.SDK {
                 # Act
-                $result = ConvertTo-JsonRpcResponse -InputObject @{result = "test"} -ID 1
+                $result = ConvertTo-JsonRpcResponse -InputObject @{result = "test" } -ID 1
 
                 # Assert
                 $result.Keys | Should -Not -Contain 'error'
@@ -105,10 +105,10 @@ Describe 'ConvertTo-JsonRpcResponse' -Tag 'Unit' {
                 # Arrange
                 $input = @{
                     error = @{
-                        code = -32600
+                        code    = -32600
                         message = "Invalid Request"
                     }
-                    code = -32600
+                    code  = -32600
                 }
 
                 # Act
@@ -125,7 +125,7 @@ Describe 'ConvertTo-JsonRpcResponse' -Tag 'Unit' {
             InModuleScope MCP.SDK {
                 # Arrange
                 $input = @{
-                    error = @{code = -32601; message = "Method not found"}
+                    error = @{code = -32601; message = "Method not found" }
                 }
 
                 # Act
@@ -141,8 +141,8 @@ Describe 'ConvertTo-JsonRpcResponse' -Tag 'Unit' {
             InModuleScope MCP.SDK {
                 # Arrange
                 $input = @{
-                    error = @{code = -32600; message = "Invalid"}
-                    code = -32600
+                    error = @{code = -32600; message = "Invalid" }
+                    code  = -32600
                 }
 
                 # Act
@@ -161,7 +161,8 @@ Describe 'ConvertTo-JsonRpcResponse' -Tag 'Unit' {
                 # Arrange
                 try {
                     Get-Item "NonExistentPath" -ErrorAction Stop
-                } catch {
+                }
+                catch {
                     $errorRecord = $_
                 }
 
@@ -223,7 +224,7 @@ Describe 'ConvertTo-JsonRpcResponse' -Tag 'Unit' {
         It 'should accept input from pipeline' {
             InModuleScope MCP.SDK {
                 # Act
-                $result = @{result = "test"} | ConvertTo-JsonRpcResponse -ID 1
+                $result = @{result = "test" } | ConvertTo-JsonRpcResponse -ID 1
 
                 # Assert
                 $result.result | Should -Be "test"
@@ -260,7 +261,7 @@ Describe 'ConvertTo-JsonRpcResponse' -Tag 'Unit' {
         It 'should accept string ID' {
             InModuleScope MCP.SDK {
                 # Act
-                $result = ConvertTo-JsonRpcResponse -InputObject @{result = "test"} -ID "string-id"
+                $result = ConvertTo-JsonRpcResponse -InputObject @{result = "test" } -ID "string-id"
 
                 # Assert
                 $result.id | Should -Be "string-id"
@@ -270,7 +271,7 @@ Describe 'ConvertTo-JsonRpcResponse' -Tag 'Unit' {
         It 'should accept integer ID' {
             InModuleScope MCP.SDK {
                 # Act
-                $result = ConvertTo-JsonRpcResponse -InputObject @{result = "test"} -ID 12345
+                $result = ConvertTo-JsonRpcResponse -InputObject @{result = "test" } -ID 12345
 
                 # Assert
                 $result.id | Should -Be 12345
@@ -280,7 +281,7 @@ Describe 'ConvertTo-JsonRpcResponse' -Tag 'Unit' {
         It 'should accept null ID' {
             InModuleScope MCP.SDK {
                 # Act
-                $result = ConvertTo-JsonRpcResponse -InputObject @{result = "test"} -ID $null
+                $result = ConvertTo-JsonRpcResponse -InputObject @{result = "test" } -ID $null
 
                 # Assert
                 $result.Keys | Should -Contain 'id'
@@ -291,7 +292,7 @@ Describe 'ConvertTo-JsonRpcResponse' -Tag 'Unit' {
         It 'should work without ID parameter' {
             InModuleScope MCP.SDK {
                 # Act
-                $result = ConvertTo-JsonRpcResponse -InputObject @{result = "test"}
+                $result = ConvertTo-JsonRpcResponse -InputObject @{result = "test" }
 
                 # Assert
                 $result.Keys | Should -Contain 'id'
@@ -328,7 +329,7 @@ Describe 'ConvertTo-JsonRpcResponse' -Tag 'Unit' {
                 # Arrange - result property should take precedence
                 $input = [PSCustomObject]@{
                     result = "success data"
-                    error = @{code = -32000; message = "Error"}
+                    error  = @{code = -32000; message = "Error" }
                 }
 
                 # Act
@@ -351,7 +352,7 @@ Describe 'ConvertTo-JsonRpcResponse' -Tag 'Unit' {
                                 level2 = "deep value"
                             }
                         }
-                        array = @(1, 2, @{key = "value"})
+                        array  = @(1, 2, @{key = "value" })
                     }
                 }
 
@@ -380,10 +381,10 @@ Describe 'ConvertTo-JsonRpcResponse' -Tag 'Unit' {
                 # Arrange
                 $input = @{
                     result = @{
-                        string = "text"
-                        number = 42
+                        string  = "text"
+                        number  = 42
                         boolean = $true
-                        null = $null
+                        null    = $null
                     }
                 }
 
@@ -403,7 +404,7 @@ Describe 'ConvertTo-JsonRpcResponse' -Tag 'Unit' {
         It 'should have exactly 3 keys for success response' {
             InModuleScope MCP.SDK {
                 # Act
-                $result = ConvertTo-JsonRpcResponse -InputObject @{result = "test"} -ID 1
+                $result = ConvertTo-JsonRpcResponse -InputObject @{result = "test" } -ID 1
 
                 # Assert
                 $result.Keys.Count | Should -Be 3
@@ -417,7 +418,7 @@ Describe 'ConvertTo-JsonRpcResponse' -Tag 'Unit' {
             InModuleScope MCP.SDK {
                 # Arrange
                 $input = @{
-                    error = @{code = -32600; message = "Invalid"}
+                    error = @{code = -32600; message = "Invalid" }
                 }
 
                 # Act

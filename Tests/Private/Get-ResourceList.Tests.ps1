@@ -18,7 +18,8 @@ BeforeAll {
 
             if ($Extension -eq ".ps1") {
                 $Content | Set-Content -Path $Path -NoNewline
-            } else {
+            }
+            else {
                 $Content | Set-Content -Path $Path
             }
             return $Path

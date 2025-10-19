@@ -7,8 +7,8 @@ function ConvertTo-JsonRpcResponse {
     )
 
     process {
-        if( -not $InputObject) {
-           $InputObject = @()
+        if ( -not $InputObject) {
+            $InputObject = @()
         }
         $jsonRpcObject = [ordered]@{
             jsonrpc = "2.0"
@@ -18,7 +18,8 @@ function ConvertTo-JsonRpcResponse {
         # handle result or error if already present
         if ($InputObject.result) {
             $jsonRpcObject.result = $InputObject.result
-        } elseif ($InputObject.error) {
+        }
+        elseif ($InputObject.error) {
             $jsonRpcObject.error = $InputObject.error
         }
         # handle error records and exceptions
@@ -27,10 +28,10 @@ function ConvertTo-JsonRpcResponse {
                 code    = -32603
                 message = $InputObject.ToString()
             }
-            if($InputObject -is [System.NotImplementedException]){
+            if ($InputObject -is [System.NotImplementedException]) {
                 $jsonRpcObject.error.code = -32601
             }
-            if($InputObject -is [System.IO.FileNotFoundException]){
+            if ($InputObject -is [System.IO.FileNotFoundException]) {
                 $jsonRpcObject.error.code = -32602
                 $jsonRpcObject.error.data = @{
                     uri = $InputObject.FileName

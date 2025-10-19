@@ -21,6 +21,7 @@ The module follows standard PowerShell module conventions:
 ## Development Commands
 
 ### Testing the Module
+
 ```powershell
 # Import the module for testing
 Import-Module ./MCP.SDK/MCP.SDK.psd1 -Force
@@ -30,6 +31,7 @@ Start-McpServer -MCPRoot ./Examples/reference-server
 ```
 
 ### Module Installation
+
 ```powershell
 # Install locally for testing
 Import-Module ./MCP.SDK/MCP.SDK.psm1
@@ -70,6 +72,7 @@ The SDK discovers MCP capabilities by scanning the MCPRoot directory:
 ### Type Conversion
 
 `ConvertTo-JsonType` maps PowerShell types to JSON schema types:
+
 - String → "string"
 - Int32/Int64 → "integer"
 - Boolean/SwitchParameter → "boolean"
@@ -79,6 +82,7 @@ The SDK discovers MCP capabilities by scanning the MCPRoot directory:
 ### Signature Extraction
 
 Both `Get-ToolSignature` and `Get-PromptSignature` rely on PowerShell's `Get-Help` and `Get-Command` to extract:
+
 - Parameter names and types
 - Required vs. optional parameters
 - Help text for descriptions
@@ -89,6 +93,7 @@ Both `Get-ToolSignature` and `Get-PromptSignature` rely on PowerShell's `Get-Hel
 To create a new MCP server:
 
 1. Create a directory structure:
+
    ```
    my-server/
    ├── tools/          # Executable PowerShell scripts
@@ -98,6 +103,7 @@ To create a new MCP server:
    ```
 
 2. Write PowerShell scripts with proper help documentation:
+
    ```powershell
    <#
    .SYNOPSIS
@@ -125,17 +131,21 @@ To create a new MCP server:
 ## Key Implementation Details
 
 ### JSON-RPC Protocol
+
 - All requests/responses use JSON-RPC 2.0 format
 - Protocol version: "2024-11-05"
 - Errors use code -32603 for internal errors
 
 ### Capability Detection
+
 `Get-Initialization` checks for the presence of files in each directory to determine server capabilities:
+
 - If `tools/` contains .ps1 files → `capabilities.tools = {}`
 - If `prompts/` contains .ps1 files → `capabilities.prompts = {}`
 - If `resources/` contains files → `capabilities.resources = {}`
 
 ### Module Loading Order (MCP.SDK.psm1)
+
 1. Classes (if any exist in `Classes/`)
 2. Private functions (auto-exported for dev/testing)
 3. Public functions (matches manifest exports)
@@ -143,6 +153,7 @@ To create a new MCP server:
 ## Example Reference Server
 
 The `Examples/reference-server` demonstrates an incident management system with:
+
 - **Tools**: Create-Incident, Update-IncidentStatus, Search-Incidents
 - **Prompts**: Incident-Response-Plan, Status-Update-Template, Post-Mortem-Template
 - **Resources**: current-incidents, incident-summary

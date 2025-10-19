@@ -204,7 +204,7 @@ Describe 'Get-PromptList' -Tag 'Unit' {
                 $promptsPath = Join-Path $mcpRoot 'prompts'
                 New-Item -Path $promptsPath -ItemType Directory -Force | Out-Null
                 New-TestPrompt -Path (Join-Path $promptsPath 'Test.ps1') -Synopsis "Test" `
-                    -Parameters @(@{Name='Param1'; Type='string'; Mandatory=$true; Description='Test parameter'})
+                    -Parameters @(@{Name = 'Param1'; Type = 'string'; Mandatory = $true; Description = 'Test parameter' })
 
                 # Act
                 $result = Get-PromptList -MCPRoot $mcpRoot
@@ -224,9 +224,9 @@ Describe 'Get-PromptList' -Tag 'Unit' {
                 New-Item -Path $promptsPath -ItemType Directory -Force | Out-Null
                 New-TestPrompt -Path (Join-Path $promptsPath 'WithArgs.ps1') -Synopsis "Has arguments" `
                     -Parameters @(
-                        @{Name='Required'; Type='string'; Mandatory=$true; Description='Required arg'},
-                        @{Name='Optional'; Type='int'; Mandatory=$false; Description='Optional arg'}
-                    )
+                    @{Name = 'Required'; Type = 'string'; Mandatory = $true; Description = 'Required arg' },
+                    @{Name = 'Optional'; Type = 'int'; Mandatory = $false; Description = 'Optional arg' }
+                )
 
                 # Act
                 $result = Get-PromptList -MCPRoot $mcpRoot

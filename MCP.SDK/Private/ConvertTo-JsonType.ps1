@@ -44,8 +44,9 @@ function ConvertTo-JsonType {
                     type = $jsonType
                 }
             }
-        } else {
-            return @{type=$jsonType}
+        }
+        else {
+            return @{type = $jsonType }
         }
     }
 }

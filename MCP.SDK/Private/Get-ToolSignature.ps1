@@ -1,6 +1,6 @@
 function Get-ToolSignature {
     param(
-        [Parameter(Mandatory,ValueFromPipelineByPropertyName)]
+        [Parameter(Mandatory, ValueFromPipelineByPropertyName)]
         [Alias("FullName")]
         [string]    
         $Path
@@ -21,7 +21,7 @@ function Get-ToolSignature {
                 properties = [ordered]@{}                     
             }
         }
-        if($help.synopsis) {
+        if ($help.synopsis) {
             $response.title = $help.synopsis -join "`n"
         }
         $required = @()
@@ -32,15 +32,16 @@ function Get-ToolSignature {
             $schema = [ordered]@{
                 name = $param.Name
             }
-            if($param.description.text){
+            if ($param.description.text) {
                 $schema.description = $param.description.text -join ''
             }
     
             $schema += $type
-            if($enum) {
-                if($schema.type -eq "array") {
+            if ($enum) {
+                if ($schema.type -eq "array") {
                     $schema.items.enum = $enum
-                } else {
+                }
+                else {
                     $schema.enum = $enum
                 }
             }

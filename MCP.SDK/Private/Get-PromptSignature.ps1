@@ -12,12 +12,12 @@ function Get-PromptSignature {
     
         # Build response
         $response = [ordered]@{
-            name        = $file.BaseName        
+            name = $file.BaseName        
         }
-        if($help.synopsis) {
+        if ($help.synopsis) {
             $response.title = $help.synopsis -join "`n"
         }
-        if($help.description) {
+        if ($help.description) {
             $response.description = $help.description.text -join "`n"
         }
     
@@ -26,14 +26,14 @@ function Get-PromptSignature {
         foreach ($param in $help.parameters.parameter) {
             $enum = $cmd.Parameters[$param.Name].Attributes.ValidValues
             $argument = [ordered]@{
-                name        = $param.Name
-                required    = ("true" -eq $param.required)       
+                name     = $param.Name
+                required = ("true" -eq $param.required)       
             }
-            if($param.description.text){
+            if ($param.description.text) {
                 $argument.description = $param.description.text -join ''
             }
             # Add enum info to description
-            if($enum) {
+            if ($enum) {
                 $argument.description += ". Valid Values [$($enum -join ',')]"
             }
             $response.arguments += $argument

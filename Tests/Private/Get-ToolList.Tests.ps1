@@ -120,8 +120,8 @@ Describe 'Get-ToolList' -Tag 'Unit' {
                     -Synopsis "Test Tool Synopsis" `
                     -Description "Test tool description" `
                     -Parameters @(
-                        @{ Name = 'Param1'; Type = 'string'; Mandatory = $true; Description = 'Parameter 1' }
-                    )
+                    @{ Name = 'Param1'; Type = 'string'; Mandatory = $true; Description = 'Parameter 1' }
+                )
 
                 # Act
                 $result = Get-ToolList -MCPRoot $mcpRoot
@@ -234,9 +234,9 @@ Describe 'Get-ToolList' -Tag 'Unit' {
                     -Synopsis "Param Tool" `
                     -Description "Tool with parameters" `
                     -Parameters @(
-                        @{ Name = 'Arg1'; Type = 'string'; Mandatory = $true; Description = 'First argument' }
-                        @{ Name = 'Arg2'; Type = 'int'; Mandatory = $false; Description = 'Second argument' }
-                    )
+                    @{ Name = 'Arg1'; Type = 'string'; Mandatory = $true; Description = 'First argument' }
+                    @{ Name = 'Arg2'; Type = 'int'; Mandatory = $false; Description = 'Second argument' }
+                )
 
                 # Act
                 $result = Get-ToolList -MCPRoot $mcpRoot
@@ -260,8 +260,8 @@ Describe 'Get-ToolList' -Tag 'Unit' {
                     -Synopsis "Enum Tool" `
                     -Description "Tool with enum" `
                     -Parameters @(
-                        @{ Name = 'Level'; Type = 'string'; Mandatory = $true; Description = 'Level'; ValidateSet = @('Low', 'Medium', 'High') }
-                    )
+                    @{ Name = 'Level'; Type = 'string'; Mandatory = $true; Description = 'Level'; ValidateSet = @('Low', 'Medium', 'High') }
+                )
 
                 # Act
                 $result = Get-ToolList -MCPRoot $mcpRoot
@@ -401,11 +401,11 @@ Describe 'Get-ToolList' -Tag 'Unit' {
                     -Synopsis "Complex" `
                     -Description "Complex tool" `
                     -Parameters @(
-                        @{ Name = 'StringArg'; Type = 'string'; Mandatory = $true; Description = 'String argument' }
-                        @{ Name = 'IntArg'; Type = 'int'; Mandatory = $false; Description = 'Int argument' }
-                        @{ Name = 'BoolArg'; Type = 'bool'; Mandatory = $false; Description = 'Bool argument' }
-                        @{ Name = 'ArrayArg'; Type = 'string[]'; Mandatory = $false; Description = 'Array argument' }
-                    )
+                    @{ Name = 'StringArg'; Type = 'string'; Mandatory = $true; Description = 'String argument' }
+                    @{ Name = 'IntArg'; Type = 'int'; Mandatory = $false; Description = 'Int argument' }
+                    @{ Name = 'BoolArg'; Type = 'bool'; Mandatory = $false; Description = 'Bool argument' }
+                    @{ Name = 'ArrayArg'; Type = 'string[]'; Mandatory = $false; Description = 'Array argument' }
+                )
 
                 # Act
                 $result = Get-ToolList -MCPRoot $mcpRoot

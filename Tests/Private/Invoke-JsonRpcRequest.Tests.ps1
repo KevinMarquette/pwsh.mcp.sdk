@@ -22,8 +22,8 @@ Describe 'Invoke-JsonRpcRequest' -Tag 'Unit' {
                 # Arrange
                 $requestJson = @{
                     jsonrpc = "2.0"
-                    id = 1
-                    method = "ping"
+                    id      = 1
+                    method  = "ping"
                 } | ConvertTo-Json
 
                 # Act
@@ -41,9 +41,9 @@ Describe 'Invoke-JsonRpcRequest' -Tag 'Unit' {
                 # Arrange
                 $requestJson = @{
                     jsonrpc = "2.0"
-                    id = 1
-                    method = "ping"
-                    params = @{
+                    id      = 1
+                    method  = "ping"
+                    params  = @{
                         nested = @{
                             data = "value"
                         }
@@ -64,8 +64,8 @@ Describe 'Invoke-JsonRpcRequest' -Tag 'Unit' {
                 # Arrange
                 $requestJson = @{
                     jsonrpc = "2.0"
-                    id = 42
-                    method = "ping"
+                    id      = 42
+                    method  = "ping"
                 } | ConvertTo-Json
 
                 # Act
@@ -82,8 +82,8 @@ Describe 'Invoke-JsonRpcRequest' -Tag 'Unit' {
                 # Arrange
                 $requestJson = @{
                     jsonrpc = "2.0"
-                    id = "request-123"
-                    method = "ping"
+                    id      = "request-123"
+                    method  = "ping"
                 } | ConvertTo-Json
 
                 # Act
@@ -103,8 +103,8 @@ Describe 'Invoke-JsonRpcRequest' -Tag 'Unit' {
                 # Arrange
                 $requestJson = @{
                     jsonrpc = "2.0"
-                    id = 1
-                    method = "initialize"
+                    id      = 1
+                    method  = "initialize"
                 } | ConvertTo-Json
 
                 # Act
@@ -123,8 +123,8 @@ Describe 'Invoke-JsonRpcRequest' -Tag 'Unit' {
                 # Arrange
                 $requestJson = @{
                     jsonrpc = "2.0"
-                    id = 1
-                    method = "initialize"
+                    id      = 1
+                    method  = "initialize"
                 } | ConvertTo-Json
 
                 # Act
@@ -144,8 +144,8 @@ Describe 'Invoke-JsonRpcRequest' -Tag 'Unit' {
                 # Arrange
                 $requestJson = @{
                     jsonrpc = "2.0"
-                    id = 1
-                    method = "ping"
+                    id      = 1
+                    method  = "ping"
                 } | ConvertTo-Json
 
                 # Act
@@ -163,8 +163,8 @@ Describe 'Invoke-JsonRpcRequest' -Tag 'Unit' {
                 # Arrange
                 $requestJson = @{
                     jsonrpc = "2.0"
-                    id = 1
-                    method = "ping"
+                    id      = 1
+                    method  = "ping"
                 } | ConvertTo-Json
 
                 # Act
@@ -184,8 +184,8 @@ Describe 'Invoke-JsonRpcRequest' -Tag 'Unit' {
                 # Arrange
                 $requestJson = @{
                     jsonrpc = "2.0"
-                    id = 1
-                    method = "tools/list"
+                    id      = 1
+                    method  = "tools/list"
                 } | ConvertTo-Json
 
                 # Act
@@ -203,8 +203,8 @@ Describe 'Invoke-JsonRpcRequest' -Tag 'Unit' {
                 # Arrange
                 $requestJson = @{
                     jsonrpc = "2.0"
-                    id = 1
-                    method = "tools/list"
+                    id      = 1
+                    method  = "tools/list"
                 } | ConvertTo-Json
 
                 # Act
@@ -224,8 +224,8 @@ Describe 'Invoke-JsonRpcRequest' -Tag 'Unit' {
                 # Arrange
                 $requestJson = @{
                     jsonrpc = "2.0"
-                    id = 1
-                    method = "prompts/list"
+                    id      = 1
+                    method  = "prompts/list"
                 } | ConvertTo-Json
 
                 # Act
@@ -243,8 +243,8 @@ Describe 'Invoke-JsonRpcRequest' -Tag 'Unit' {
                 # Arrange
                 $requestJson = @{
                     jsonrpc = "2.0"
-                    id = 1
-                    method = "prompts/list"
+                    id      = 1
+                    method  = "prompts/list"
                 } | ConvertTo-Json
 
                 # Act
@@ -264,8 +264,8 @@ Describe 'Invoke-JsonRpcRequest' -Tag 'Unit' {
                 # Arrange
                 $requestJson = @{
                     jsonrpc = "2.0"
-                    id = 1
-                    method = "resources/list"
+                    id      = 1
+                    method  = "resources/list"
                 } | ConvertTo-Json
 
                 # Act
@@ -283,8 +283,8 @@ Describe 'Invoke-JsonRpcRequest' -Tag 'Unit' {
                 # Arrange
                 $requestJson = @{
                     jsonrpc = "2.0"
-                    id = 1
-                    method = "resources/list"
+                    id      = 1
+                    method  = "resources/list"
                 } | ConvertTo-Json
 
                 # Act
@@ -304,8 +304,8 @@ Describe 'Invoke-JsonRpcRequest' -Tag 'Unit' {
                 # Arrange
                 $requestJson = @{
                     jsonrpc = "2.0"
-                    id = 1
-                    method = "unknown/method"
+                    id      = 1
+                    method  = "unknown/method"
                 } | ConvertTo-Json
 
                 # Act
@@ -324,8 +324,8 @@ Describe 'Invoke-JsonRpcRequest' -Tag 'Unit' {
                 # Arrange
                 $requestJson = @{
                     jsonrpc = "2.0"
-                    id = 1
-                    method = "invalid/method"
+                    id      = 1
+                    method  = "invalid/method"
                 } | ConvertTo-Json
 
                 # Act
@@ -342,8 +342,8 @@ Describe 'Invoke-JsonRpcRequest' -Tag 'Unit' {
                 # Arrange
                 $requestJson = @{
                     jsonrpc = "2.0"
-                    id = 1
-                    method = "custom/unknown"
+                    id      = 1
+                    method  = "custom/unknown"
                 } | ConvertTo-Json
 
                 # Act
@@ -374,8 +374,8 @@ Describe 'Invoke-JsonRpcRequest' -Tag 'Unit' {
                 # Arrange
                 $requestJson = @{
                     jsonrpc = "2.0"
-                    id = 1
-                    method = "ping"
+                    id      = 1
+                    method  = "ping"
                 } | ConvertTo-Json
 
                 # Act
@@ -392,14 +392,14 @@ Describe 'Invoke-JsonRpcRequest' -Tag 'Unit' {
                 # Arrange
                 $request1 = @{
                     jsonrpc = "2.0"
-                    id = 1
-                    method = "ping"
+                    id      = 1
+                    method  = "ping"
                 } | ConvertTo-Json
 
                 $request2 = @{
                     jsonrpc = "2.0"
-                    id = 2
-                    method = "ping"
+                    id      = 2
+                    method  = "ping"
                 } | ConvertTo-Json
 
                 # Act
@@ -435,8 +435,8 @@ Describe 'Invoke-JsonRpcRequest' -Tag 'Unit' {
                 # Arrange
                 $requestJson = @{
                     jsonrpc = "2.0"
-                    id = 1
-                    method = "ping"
+                    id      = 1
+                    method  = "ping"
                 } | ConvertTo-Json
 
                 # Act
@@ -453,8 +453,8 @@ Describe 'Invoke-JsonRpcRequest' -Tag 'Unit' {
                 # Arrange
                 $requestJson = @{
                     jsonrpc = "2.0"
-                    id = 99
-                    method = "ping"
+                    id      = 99
+                    method  = "ping"
                 } | ConvertTo-Json
 
                 # Act
@@ -472,8 +472,8 @@ Describe 'Invoke-JsonRpcRequest' -Tag 'Unit' {
                 # Arrange
                 $requestJson = @{
                     jsonrpc = "2.0"
-                    id = 1
-                    method = "ping"
+                    id      = 1
+                    method  = "ping"
                 } | ConvertTo-Json
 
                 # Act
@@ -490,8 +490,8 @@ Describe 'Invoke-JsonRpcRequest' -Tag 'Unit' {
                 # Arrange
                 $requestJson = @{
                     jsonrpc = "2.0"
-                    id = 1
-                    method = "ping"
+                    id      = 1
+                    method  = "ping"
                 } | ConvertTo-Json
 
                 # Act
@@ -513,8 +513,8 @@ Describe 'Invoke-JsonRpcRequest' -Tag 'Unit' {
                 if (Test-Path $refServerPath) {
                     $requestJson = @{
                         jsonrpc = "2.0"
-                        id = 1
-                        method = "initialize"
+                        id      = 1
+                        method  = "initialize"
                     } | ConvertTo-Json
 
                     # Act
@@ -535,8 +535,8 @@ Describe 'Invoke-JsonRpcRequest' -Tag 'Unit' {
                 if (Test-Path $refServerPath) {
                     $requestJson = @{
                         jsonrpc = "2.0"
-                        id = 1
-                        method = "tools/list"
+                        id      = 1
+                        method  = "tools/list"
                     } | ConvertTo-Json
 
                     # Act

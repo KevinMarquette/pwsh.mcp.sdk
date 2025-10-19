@@ -89,7 +89,8 @@ Describe 'MCP.SDK Module Tests' -Tag 'Module' {
             # Assert - This is optional as modules may only have private functions
             if (Test-Path $publicPath) {
                 (Get-Item $publicPath).PSIsContainer | Should -Be $true
-            } else {
+            }
+            else {
                 # Public directory is optional
                 $true | Should -Be $true
             }

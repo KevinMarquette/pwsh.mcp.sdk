@@ -10,5 +10,5 @@ function Get-PromptList {
     )
 
     $prompts = @(Get-ChildItem -Path "$MCPRoot/prompts" -Filter '*.ps1' -ErrorAction SilentlyContinue | Get-PromptSignature)
-    return @{prompts=$prompts}
+    return @{prompts = $prompts }
 }
