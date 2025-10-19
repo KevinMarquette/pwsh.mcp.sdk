@@ -1,5 +1,9 @@
 function Get-PromptSignature {
-    param($Path)
+    param(
+        [Parameter(Mandatory, ValueFromPipelineByPropertyName)]
+        [Alias("FullName")]
+        [string]$Path
+    )
     process {
         $file = Get-Item $Path
         $help = Get-Help $Path
