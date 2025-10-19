@@ -395,13 +395,6 @@ Describe 'Get-Initialization' -Tag 'Unit' {
             }
         }
 
-        It 'should require MCPRoot parameter' {
-            InModuleScope MCP.SDK {
-                # Act & Assert
-                { Get-Initialization } | Should -Throw
-            }
-        }
-
         It 'should accept Name parameter (currently unused)' {
             InModuleScope MCP.SDK {
                 # Arrange

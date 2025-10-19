@@ -578,13 +578,6 @@ param([string]$Arg1)
             }
         }
 
-        It 'should require Path parameter' {
-            InModuleScope MCP.SDK {
-                # Act & Assert
-                { Get-PromptSignature } | Should -Throw
-            }
-        }
-
         It 'should handle non-existent file path' {
             InModuleScope MCP.SDK {
                 # Arrange

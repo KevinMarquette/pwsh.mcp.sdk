@@ -47,7 +47,6 @@ function Get-ToolSignature {
             
             $response.inputSchema.properties[$param.Name] = $schema
             if ("true" -eq $param.required) {
-                Write-Host "Adding required parameter: $($param.Name)"
                 $required += $param.Name
             }
         }

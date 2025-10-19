@@ -9,7 +9,13 @@ function Invoke-JsonRpcRequest {
     )
     process{
 
-        $request = $RequestJson | ConvertFrom-Json -Depth 10
+        # ConvertFrom-Json -Depth is only available in PowerShell 6+
+        # PowerShell 5.1 uses default depth of 2 which may not be sufficient
+        if ($PSVersionTable.PSVersion.Major -ge 6) {
+            $request = $RequestJson | ConvertFrom-Json -Depth 10
+        } else {
+            $request = $RequestJson | ConvertFrom-Json
+        }
         # Handle MCP requests based on the "method" field
         $result = @()
         try{
@@ -28,6 +34,9 @@ function Invoke-JsonRpcRequest {
                 }
                 "resources/list" {
                     Get-ResourceList -MCPRoot $MCPRoot
+                }
+                default {
+                    throw [System.NotImplementedException]::new("Method '$($request.method)' is not implemented.")
                 }
             }
         } catch {

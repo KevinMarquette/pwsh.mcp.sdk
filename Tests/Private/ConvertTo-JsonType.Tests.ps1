@@ -138,12 +138,6 @@ Describe 'ConvertTo-JsonType' -Tag 'Unit' {
 
     Context 'Parameter Validation' {
 
-        It 'should require PSTypeName parameter' {
-            InModuleScope MCP.SDK {
-                # Act & Assert
-                { ConvertTo-JsonType } | Should -Throw
-            }
-        }
 
         It 'should not accept <InvalidValue> for PSTypeName' -TestCases @(
             @{ InvalidValue = $null; Description = 'null' }

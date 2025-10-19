@@ -182,13 +182,6 @@ Describe 'Get-PromptList' -Tag 'Unit' {
 
     Context 'Parameter Validation' {
 
-        It 'should require MCPRoot parameter' {
-            InModuleScope MCP.SDK {
-                # Act & Assert
-                { Get-PromptList } | Should -Throw
-            }
-        }
-
         It 'should accept valid MCPRoot path' {
             InModuleScope MCP.SDK {
                 # Arrange

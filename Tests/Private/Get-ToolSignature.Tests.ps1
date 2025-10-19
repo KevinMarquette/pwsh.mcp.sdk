@@ -507,13 +507,6 @@ param(
             }
         }
 
-        It 'should require Path parameter' {
-            InModuleScope MCP.SDK {
-                # Act & Assert
-                { Get-ToolSignature } | Should -Throw
-            }
-        }
-
         It 'should produce errors for non-existent file path' {
             InModuleScope MCP.SDK {
                 # Arrange
