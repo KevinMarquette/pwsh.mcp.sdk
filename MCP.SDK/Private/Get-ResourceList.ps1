@@ -1,4 +1,4 @@
-function Get-Resources {
+function Get-ResourceList {
     <#
     .SYNOPSIS
         Retrieves a list of available resources.
@@ -61,13 +61,4 @@ function Get-Resources {
         $response += $resourceRecord
     }
     return @{resources=$response}
-    # "resources": [
-    #   {
-    #     "uri": "file:///project/src/main.rs",
-    #     "name": "main.rs",
-    #     "title": "Rust Software Application Main File",
-    #     "description": "Primary application entry point",
-    #     "mimeType": "text/x-rust"
-    #   }
-    # ],
 }

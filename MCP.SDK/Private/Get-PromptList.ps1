@@ -1,4 +1,4 @@
-function Get-Prompts {
+function Get-PromptList {
     <#
     .SYNOPSIS
         Retrieves a list of available prompts with their signatures.
