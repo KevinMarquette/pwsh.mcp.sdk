@@ -9,7 +9,8 @@ function Get-ToolSignature {
 
         $help = Get-Help $Path
         $file = Get-Item $Path
-     
+        $cmd = Get-Command $Path
+
         $parameters = $help.parameters.parameter
     
         $response = [ordered]@{

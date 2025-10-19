@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cmd.exe /c \"tree /F\")"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
