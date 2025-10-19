@@ -15,7 +15,7 @@ function Start-MCPServer {
             $result = Invoke-Request -jsonrpc $jsonrpc
             $output = $result | Convert-ToJsonRpcResponse -id $jsonrpc.id
             $output | Add-Content $PSScriptRoot\log.log
-            $output | Write-Host         
+            # $output | Write-Host
         }
         catch {
             [ordered]@{
@@ -27,7 +27,7 @@ function Start-MCPServer {
                     data    = $jsonrpc
                 }
             }
-            $jsonrpc | ConvertTo-Json -Depth 10 -Compress | Write-Host
+            #$jsonrpc | ConvertTo-Json -Depth 10 -Compress | Write-Host
         }
     }
 }

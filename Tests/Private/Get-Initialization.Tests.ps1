@@ -91,7 +91,7 @@ Describe 'Get-Initialization' -Tag 'Unit' {
                 New-Item -Path $testPath -ItemType Directory -Force | Out-Null
 
                 # Act
-                $result = Get-Initialization -MCPRoot $testPath
+                $result = Get-Initialization -MCPRoot $testPath -Name 'PowerShell' -Title 'Example PowerShell Server'
 
                 # Assert
                 $result.serverInfo.name | Should -Be 'PowerShell'

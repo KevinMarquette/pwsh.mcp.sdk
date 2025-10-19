@@ -6,9 +6,9 @@ function ConvertTo-JsonType {
         ConvertTo-JsonType -PStypeName $Path
 
         .Notes
-        
+
     #>
-    [cmdletbinding()]
+    [CmdletBinding()]
     param(
         # Parameter help description
         [Parameter(

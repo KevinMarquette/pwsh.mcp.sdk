@@ -2,7 +2,7 @@ function Get-ToolSignature {
     param(
         [Parameter(Mandatory, ValueFromPipelineByPropertyName)]
         [Alias("FullName")]
-        [string]    
+        [string]
         $Path
     )
     process {
@@ -12,13 +12,13 @@ function Get-ToolSignature {
         $cmd = Get-Command $Path
 
         $parameters = $help.parameters.parameter
-    
+
         $response = [ordered]@{
             name        = $file.BaseName
             description = $help.description.text -join "`n"
             inputSchema = @{
                 type       = "object"
-                properties = [ordered]@{}                     
+                properties = [ordered]@{}
             }
         }
         if ($help.synopsis) {
@@ -28,14 +28,14 @@ function Get-ToolSignature {
         foreach ($param in $parameters) {
             $type = $param.parameterValue | ConvertTo-JsonType
             $enum = $cmd.Parameters[$param.Name].Attributes.ValidValues
-    
+
             $schema = [ordered]@{
                 name = $param.Name
             }
             if ($param.description.text) {
                 $schema.description = $param.description.text -join ''
             }
-    
+
             $schema += $type
             if ($enum) {
                 if ($schema.type -eq "array") {
@@ -45,7 +45,7 @@ function Get-ToolSignature {
                     $schema.enum = $enum
                 }
             }
-            
+
             $response.inputSchema.properties[$param.Name] = $schema
             if ("true" -eq $param.required) {
                 $required += $param.Name

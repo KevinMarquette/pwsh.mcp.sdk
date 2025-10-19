@@ -9,9 +9,9 @@ function Get-ResourceList {
         $UriPrefix = "MCP://"
     )
     $resourcesPath = (Resolve-Path "$MCPRoot/resources").Path
-    
+
     $resourceFiles = Get-ChildItem -Path "$resourcesPath" -File -Recurse
-    
+
     $response = @()
     foreach ($resourceFile in $resourceFiles) {
         # Get Relative Path

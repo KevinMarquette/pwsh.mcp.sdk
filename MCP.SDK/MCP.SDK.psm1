@@ -22,7 +22,7 @@ if (Test-Path $classPath -ErrorAction SilentlyContinue) {
 # Import all private functions
 $privatePath = Join-Path $PSScriptRoot 'Private'
 if (Test-Path $privatePath -ErrorAction SilentlyContinue) {
-    $PrivateFunctions = Get-ChildItem -Path $privatePath -Filter '*.ps1' -Recurse 
+    $PrivateFunctions = Get-ChildItem -Path $privatePath -Filter '*.ps1' -Recurse
     $PrivateFunctions | ForEach-Object {
         Write-Verbose "Loading private function: $($_.Name)"
         . $_.FullName

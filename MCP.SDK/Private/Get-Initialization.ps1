@@ -10,8 +10,8 @@ function Get-Initialization {
         protocolVersion = "2024-11-05"
         capabilities    = @{}
         serverInfo      = @{
-            name    = "PowerShell"
-            title   = "Example PowerShell Server"
+            name    = $Name
+            title   = $Title
             version = "1.0.0"
         }
     }

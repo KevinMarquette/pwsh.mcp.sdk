@@ -155,4 +155,31 @@ Describe 'MCP.SDK Module Tests' -Tag 'Module' {
             }
         }
     }
+
+    Context 'Code Quality - PSScriptAnalyzer' {
+
+        It 'should pass PSScriptAnalyzer rules' {
+            # Arrange
+            $settingsPath = Join-Path $ModuleRoot 'PSScriptAnalyzerSettings.psd1'
+
+            # Check if PSScriptAnalyzer is available
+            $analyzerModule = Get-Module -ListAvailable -Name PSScriptAnalyzer
+            if (-not $analyzerModule) {
+                Set-ItResult -Skipped -Because "PSScriptAnalyzer module is not installed"
+                return
+            }
+
+            # Act
+            $results = Invoke-ScriptAnalyzer -Path $SourcePath -Recurse -Settings $settingsPath
+
+            # Assert
+            if ($results.Count -gt 0) {
+                $message = "PSScriptAnalyzer found $($results.Count) issue(s):`n"
+                foreach ($result in $results) {
+                    $message += "  - [$($result.Severity)] $($result.RuleName) in $($result.ScriptName):$($result.Line) - $($result.Message)`n"
+                }
+                $results.Count | Should -Be 0 -Because $message
+            }
+        }
+    }
 }

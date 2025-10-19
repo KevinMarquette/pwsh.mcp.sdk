@@ -1,5 +1,5 @@
 function ConvertTo-JsonRpcResponse {
-    [cmdletbinding()]
+    [CmdletBinding()]
     param(
         [Parameter(ValueFromPipeline)]
         $InputObject,
