@@ -75,3 +75,4 @@ It 'should handle <Description>' -TestCases @(
 - **Use TestCases** to reduce code duplication when tests follow similar patterns.
 - **Keep TestCases Simple** as just key value pairs with the validation inside the test. Each testcase in a set should specify all the keys.
 - **Pass parameters explicitly** when combining TestCases with `InModuleScope` using `-Parameters ([hashtable]$PSBoundParameters)`.
+- Use TestDrive: or $testdrive instead of $ENV:TEMP for temporary files

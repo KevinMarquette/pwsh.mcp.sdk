@@ -37,7 +37,7 @@ function Get-Resource {
     # Get the content
     $content = if ($resourceFile.Extension -eq '.ps1') {
         # Execute PS1 files
-        & $resourceFile.FullName | Out-String
+        Invoke-Script -Path $resourceFile.FullName | Out-String
     }
     else {
         Get-Content -Path $resourceFile.FullName -Raw
