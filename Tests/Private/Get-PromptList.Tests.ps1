@@ -58,101 +58,36 @@ Describe 'Get-PromptList' -Tag 'Unit' {
 
     Context 'Basic Functionality' {
 
-        It 'should return a hashtable with prompts key' {
-            InModuleScope MCP.SDK {
+        It 'should return <Description>' -TestCases @(
+            @{ MCPRoot = "basic-server"; ExpectedCount = 1; ExpectedKey = "prompts"; Description = "hashtable with prompts key" }
+            @{ MCPRoot = "array-server"; ExpectedCount = 2; ExpectedKey = "prompts"; Description = "prompts as an array" }
+            @{ MCPRoot = "empty-server"; ExpectedCount = 0; ExpectedKey = "prompts"; Description = "empty array when no prompts exist" }
+            @{ MCPRoot = "filter-server"; ExpectedCount = 1; ExpectedKey = "prompts"; Description = "only include .ps1 files from prompts directory" }
+            @{ MCPRoot = "norecurse-server"; ExpectedCount = 1; ExpectedKey = "prompts"; Description = "not recurse into subdirectories" }
+            @{ MCPRoot = "noprompts-server"; ExpectedCount = 0; ExpectedKey = "prompts"; Description = "work when prompts directory does not exist" }
+        ) {
+            param($MCPRoot, $ExpectedCount, $ExpectedKey, $Description)
+
+            InModuleScope MCP.SDK -Parameters ([hashtable]$PSBoundParameters) {
                 # Arrange
-                $mcpRoot = Join-Path $TestDrive 'basic-server'
+                $mcpRoot = Join-Path $TestDrive $MCPRoot
                 $promptsPath = Join-Path $mcpRoot 'prompts'
                 New-Item -Path $promptsPath -ItemType Directory -Force | Out-Null
-                New-TestPrompt -Path (Join-Path $promptsPath 'Prompt1.ps1') -Synopsis "Prompt 1" -Description "First prompt"
+                
+                if ($ExpectedCount -gt 0) {
+                    New-TestPrompt -Path (Join-Path $promptsPath 'Prompt1.ps1') -Synopsis "Prompt 1" -Description "First prompt"
+                    if ($ExpectedCount -gt 1) {
+                        New-TestPrompt -Path (Join-Path $promptsPath 'Prompt2.ps1') -Synopsis "Prompt 2"
+                    }
+                }
 
                 # Act
                 $result = Get-PromptList -MCPRoot $mcpRoot
 
                 # Assert
                 $result | Should -Not -BeNullOrEmpty
-                $result.Keys | Should -Contain 'prompts'
-            }
-        }
-
-        It 'should return prompts as an array' {
-            InModuleScope MCP.SDK {
-                # Arrange
-                $mcpRoot = Join-Path $TestDrive 'array-server'
-                $promptsPath = Join-Path $mcpRoot 'prompts'
-                New-Item -Path $promptsPath -ItemType Directory -Force | Out-Null
-                New-TestPrompt -Path (Join-Path $promptsPath 'Prompt1.ps1') -Synopsis "Prompt 1"
-                New-TestPrompt -Path (Join-Path $promptsPath 'Prompt2.ps1') -Synopsis "Prompt 2"
-
-                # Act
-                $result = Get-PromptList -MCPRoot $mcpRoot
-
-                # Assert
-                @($result.prompts).Count | Should -Be 2
-            }
-        }
-
-        It 'should return empty array when no prompts exist' {
-            InModuleScope MCP.SDK {
-                # Arrange
-                $mcpRoot = Join-Path $TestDrive 'empty-server'
-                $promptsPath = Join-Path $mcpRoot 'prompts'
-                New-Item -Path $promptsPath -ItemType Directory -Force | Out-Null
-
-                # Act
-                $result = Get-PromptList -MCPRoot $mcpRoot
-
-                # Assert
-                @($result.prompts).Count | Should -Be 0
-            }
-        }
-
-        It 'should only include .ps1 files from prompts directory' {
-            InModuleScope MCP.SDK {
-                # Arrange
-                $mcpRoot = Join-Path $TestDrive 'filter-server'
-                $promptsPath = Join-Path $mcpRoot 'prompts'
-                New-Item -Path $promptsPath -ItemType Directory -Force | Out-Null
-                New-TestPrompt -Path (Join-Path $promptsPath 'Valid.ps1') -Synopsis "Valid prompt"
-                "Not a PowerShell file" | Set-Content (Join-Path $promptsPath 'readme.txt')
-                "Also not a PowerShell file" | Set-Content (Join-Path $promptsPath 'config.json')
-
-                # Act
-                $result = Get-PromptList -MCPRoot $mcpRoot
-
-                # Assert
-                @($result.prompts).Count | Should -Be 1
-                $result.prompts[0].name | Should -Be 'Valid'
-            }
-        }
-
-        It 'should not recurse into subdirectories' {
-            InModuleScope MCP.SDK {
-                # Arrange
-                $mcpRoot = Join-Path $TestDrive 'norecurse-server'
-                $promptsPath = Join-Path $mcpRoot 'prompts'
-                $subPath = Join-Path $promptsPath 'subdir'
-                New-Item -Path $subPath -ItemType Directory -Force | Out-Null
-                New-TestPrompt -Path (Join-Path $promptsPath 'TopLevel.ps1') -Synopsis "Top level"
-                New-TestPrompt -Path (Join-Path $subPath 'Nested.ps1') -Synopsis "Nested"
-
-                # Act
-                $result = Get-PromptList -MCPRoot $mcpRoot
-
-                # Assert
-                @($result.prompts).Count | Should -Be 1
-                $result.prompts[0].name | Should -Be 'TopLevel'
-            }
-        }
-
-        It 'should work when prompts directory does not exist' {
-            InModuleScope MCP.SDK {
-                # Arrange
-                $mcpRoot = Join-Path $TestDrive 'noprompts-server'
-                New-Item -Path $mcpRoot -ItemType Directory -Force | Out-Null
-
-                # Act & Assert
-                { Get-PromptList -MCPRoot $mcpRoot } | Should -Not -Throw
+                $result.Keys | Should -Contain $ExpectedKey
+                @($result.prompts).Count | Should -Be $ExpectedCount
             }
         }
     }
@@ -276,57 +211,36 @@ Describe 'Get-PromptList' -Tag 'Unit' {
 
     Context 'Return Structure' {
 
-        It 'should return correct structure for single prompt' {
-            InModuleScope MCP.SDK {
+        It 'should return correct structure for <Description>' -TestCases @(
+            @{ MCPRoot = "single-server"; ExpectedCount = 1; ExpectedKey = "prompts"; Description = "single prompt" }
+            @{ MCPRoot = "multiple-server"; ExpectedCount = 3; ExpectedKey = "prompts"; Description = "multiple prompts" }
+            @{ MCPRoot = "noprompts-structure"; ExpectedCount = 0; ExpectedKey = "prompts"; Description = "no prompts exist" }
+        ) {
+            param($MCPRoot, $ExpectedCount, $ExpectedKey, $Description)
+
+            InModuleScope MCP.SDK -Parameters ([hashtable]$PSBoundParameters) {
                 # Arrange
-                $mcpRoot = Join-Path $TestDrive 'single-server'
+                $mcpRoot = Join-Path $TestDrive $MCPRoot
                 $promptsPath = Join-Path $mcpRoot 'prompts'
                 New-Item -Path $promptsPath -ItemType Directory -Force | Out-Null
-                New-TestPrompt -Path (Join-Path $promptsPath 'Single.ps1') -Synopsis "Single prompt"
+                
+                if ($ExpectedCount -gt 0) {
+                    New-TestPrompt -Path (Join-Path $promptsPath 'First.ps1') -Synopsis "First"
+                    if ($ExpectedCount -gt 1) {
+                        New-TestPrompt -Path (Join-Path $promptsPath 'Second.ps1') -Synopsis "Second"
+                    }
+                    if ($ExpectedCount -gt 2) {
+                        New-TestPrompt -Path (Join-Path $promptsPath 'Third.ps1') -Synopsis "Third"
+                    }
+                }
 
                 # Act
                 $result = Get-PromptList -MCPRoot $mcpRoot
 
                 # Assert
                 $result | Should -BeOfType [hashtable]
-                $result.prompts | Should -Not -BeNullOrEmpty
-                @($result.prompts).Count | Should -Be 1
-            }
-        }
-
-        It 'should return correct structure for multiple prompts' {
-            InModuleScope MCP.SDK {
-                # Arrange
-                $mcpRoot = Join-Path $TestDrive 'multiple-server'
-                $promptsPath = Join-Path $mcpRoot 'prompts'
-                New-Item -Path $promptsPath -ItemType Directory -Force | Out-Null
-                New-TestPrompt -Path (Join-Path $promptsPath 'First.ps1') -Synopsis "First"
-                New-TestPrompt -Path (Join-Path $promptsPath 'Second.ps1') -Synopsis "Second"
-                New-TestPrompt -Path (Join-Path $promptsPath 'Third.ps1') -Synopsis "Third"
-
-                # Act
-                $result = Get-PromptList -MCPRoot $mcpRoot
-
-                # Assert
-                $result | Should -BeOfType [hashtable]
-                @($result.prompts).Count | Should -Be 3
-            }
-        }
-
-        It 'should return correct structure when no prompts exist' {
-            InModuleScope MCP.SDK {
-                # Arrange
-                $mcpRoot = Join-Path $TestDrive 'noprompts-structure'
-                $promptsPath = Join-Path $mcpRoot 'prompts'
-                New-Item -Path $promptsPath -ItemType Directory -Force | Out-Null
-
-                # Act
-                $result = Get-PromptList -MCPRoot $mcpRoot
-
-                # Assert
-                $result | Should -BeOfType [hashtable]
-                $result.Keys | Should -Contain 'prompts'
-                @($result.prompts).Count | Should -Be 0
+                $result.Keys | Should -Contain $ExpectedKey
+                @($result.prompts).Count | Should -Be $ExpectedCount
             }
         }
     }

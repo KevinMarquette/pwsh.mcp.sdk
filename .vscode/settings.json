@@ -1,4 +1,4 @@
 {
-    "editor.formatOnSave": true,
-    "files.trimTrailingWhitespace": true
+    "editor.formatOnSave": false,
+    "files.trimTrailingWhitespace": false
 }

@@ -70,7 +70,8 @@ It 'should handle <Description>' -TestCases @(
 
 ## Key Points
 
-- **Always use `InModuleScope`** for testing private functions
-- **Use `Script:` prefix** for helper functions defined within `InModuleScope`
-- **Use TestCases** to reduce code duplication when tests follow similar patterns
-- **Pass parameters explicitly** when combining TestCases with `InModuleScope` using `-Parameters ([hashtable]$PSBoundParameters)`
+- **Always use `InModuleScope`** for testing private functions.
+- **Use `Script:` prefix** for helper functions defined within `InModuleScope`.
+- **Use TestCases** to reduce code duplication when tests follow similar patterns.
+- **Keep TestCases Simple** as just key value pairs with the validation inside the test. Each testcase in a set should specify all the keys.
+- **Pass parameters explicitly** when combining TestCases with `InModuleScope` using `-Parameters ([hashtable]$PSBoundParameters)`.
