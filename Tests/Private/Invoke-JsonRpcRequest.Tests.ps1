@@ -296,6 +296,105 @@ Describe 'Invoke-JsonRpcRequest' -Tag 'Unit' {
         }
     }
 
+    Context 'Method Routing - resources/read' {
+
+        BeforeEach {
+            # Create a test resource file
+            $testContent = "Test resource content"
+            $testContent | Set-Content -Path "$script:TestMCPRoot/resources/test.txt" -NoNewline
+        }
+
+        It 'should handle resources/read method' {
+            InModuleScope MCP.SDK -Parameters @{ MCPRoot = $script:TestMCPRoot } {
+                param($MCPRoot)
+                # Arrange
+                $requestJson = @{
+                    jsonrpc = "2.0"
+                    id      = 1
+                    method  = "resources/read"
+                    params  = @{
+                        uri = "file://test"
+                    }
+                } | ConvertTo-Json -Depth 10
+
+                # Act
+                $result = Invoke-JsonRpcRequest -RequestJson $requestJson -MCPRoot $MCPRoot
+
+                # Assert
+                $result.result | Should -Not -BeNullOrEmpty
+                $result.result.Keys | Should -Contain 'contents'
+            }
+        }
+
+        It 'should return resource content' {
+            InModuleScope MCP.SDK -Parameters @{ MCPRoot = $script:TestMCPRoot } {
+                param($MCPRoot)
+                # Arrange
+                $requestJson = @{
+                    jsonrpc = "2.0"
+                    id      = 1
+                    method  = "resources/read"
+                    params  = @{
+                        uri = "file://test"
+                    }
+                } | ConvertTo-Json -Depth 10
+
+                # Act
+                $result = Invoke-JsonRpcRequest -RequestJson $requestJson -MCPRoot $MCPRoot
+
+                # Assert
+                $result.result.contents | Should -HaveCount 1
+                $result.result.contents[0].text | Should -Be "Test resource content"
+                $result.result.contents[0].uri | Should -Be "file://test"
+            }
+        }
+
+        It 'should return error for non-existent resource' {
+            InModuleScope MCP.SDK -Parameters @{ MCPRoot = $script:TestMCPRoot } {
+                param($MCPRoot)
+                # Arrange
+                $requestJson = @{
+                    jsonrpc = "2.0"
+                    id      = 1
+                    method  = "resources/read"
+                    params  = @{
+                        uri = "file://nonexistent"
+                    }
+                } | ConvertTo-Json -Depth 10
+
+                # Act
+                $result = Invoke-JsonRpcRequest -RequestJson $requestJson -MCPRoot $MCPRoot
+
+                # Assert
+                $result.Keys | Should -Contain 'error'
+                $result.error.message | Should -Match "not found"
+            }
+        }
+
+        It 'should handle different URI schemes' {
+            InModuleScope MCP.SDK -Parameters @{ MCPRoot = $script:TestMCPRoot } {
+                param($MCPRoot)
+                # Arrange
+                "Custom content" | Set-Content -Path "$MCPRoot/resources/custom.txt" -NoNewline
+                $requestJson = @{
+                    jsonrpc = "2.0"
+                    id      = 1
+                    method  = "resources/read"
+                    params  = @{
+                        uri = "custom://custom"
+                    }
+                } | ConvertTo-Json -Depth 10
+
+                # Act
+                $result = Invoke-JsonRpcRequest -RequestJson $requestJson -MCPRoot $MCPRoot
+
+                # Assert
+                $result.result.contents[0].text | Should -Be "Custom content"
+                $result.result.contents[0].uri | Should -Be "custom://custom"
+            }
+        }
+    }
+
     Context 'Error Handling' {
 
         It 'should return error for unimplemented method' {

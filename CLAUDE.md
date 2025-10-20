@@ -64,7 +64,7 @@ The SDK discovers MCP capabilities by scanning the MCPRoot directory:
   - Parameters become prompt arguments with descriptions
 
 - **Resources**: Any files in `{MCPRoot}/resources/**/*`
-  - Automatically assigned URIs based on relative path (e.g., `MCP://status/current-incidents`)
+  - Automatically assigned URIs based on relative path (e.g., `file://status/current-incidents`)
   - MIME types detected from file extensions
   - `.ps1` files: Help synopsis/description becomes resource metadata
   - `.md` files: First heading (`# Title`) becomes the resource title

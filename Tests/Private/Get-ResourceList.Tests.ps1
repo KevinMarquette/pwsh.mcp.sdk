@@ -16,12 +16,8 @@ BeforeAll {
             $directory = Split-Path $Path -Parent
             New-Item -Path $directory -ItemType Directory -Force -ErrorAction SilentlyContinue | Out-Null
 
-            if ($Extension -eq ".ps1") {
-                $Content | Set-Content -Path $Path -NoNewline
-            }
-            else {
-                $Content | Set-Content -Path $Path
-            }
+            $Content | Set-Content -Path $Path -NoNewline
+
             return $Path
         }
     }
@@ -118,35 +114,31 @@ Describe 'Get-ResourceList' -Tag 'Unit' {
 
     Context 'URI Generation' {
 
-        It 'should generate correct URIs with default prefix' {
-            InModuleScope MCP.SDK {
+        It 'should generate URIs with <Description>' -TestCases @(
+            @{ UriPrefix = $null; ExpectedUri = "file://test"; Description = "default prefix" }
+            @{ UriPrefix = "custom://"; ExpectedUri = "custom://test"; Description = "custom prefix" }
+            @{ UriPrefix = "http://"; ExpectedUri = "http://test"; Description = "http prefix" }
+            @{ UriPrefix = "mcp://"; ExpectedUri = "mcp://test"; Description = "mcp prefix" }
+        ) {
+            param($UriPrefix, $ExpectedUri)
+
+            InModuleScope MCP.SDK -Parameters ([hashtable]$PSBoundParameters) {
                 # Arrange
-                $mcpRoot = Join-Path $TestDrive 'uri-server'
+                $mcpRoot = Join-Path $TestDrive "uri-server-$(Get-Random)"
                 $resourcesPath = Join-Path $mcpRoot 'resources'
                 New-Item -Path $resourcesPath -ItemType Directory -Force | Out-Null
                 New-TestResource -Path (Join-Path $resourcesPath 'test.txt') -Content "Test"
 
                 # Act
-                $result = Get-ResourceList -MCPRoot $mcpRoot
+                $result = if ($UriPrefix) {
+                    Get-ResourceList -MCPRoot $mcpRoot -UriPrefix $UriPrefix
+                }
+                else {
+                    Get-ResourceList -MCPRoot $mcpRoot
+                }
 
                 # Assert
-                $result.resources[0].uri | Should -Be 'MCP://test'
-            }
-        }
-
-        It 'should generate URIs with custom prefix' {
-            InModuleScope MCP.SDK {
-                # Arrange
-                $mcpRoot = Join-Path $TestDrive 'custom-uri-server'
-                $resourcesPath = Join-Path $mcpRoot 'resources'
-                New-Item -Path $resourcesPath -ItemType Directory -Force | Out-Null
-                New-TestResource -Path (Join-Path $resourcesPath 'test.txt') -Content "Test"
-
-                # Act
-                $result = Get-ResourceList -MCPRoot $mcpRoot -UriPrefix "custom://"
-
-                # Assert
-                $result.resources[0].uri | Should -Be 'custom://test'
+                $result.resources[0].uri | Should -Be $ExpectedUri
             }
         }
 
@@ -163,7 +155,7 @@ Describe 'Get-ResourceList' -Tag 'Unit' {
                 $result = Get-ResourceList -MCPRoot $mcpRoot
 
                 # Assert
-                $result.resources[0].uri | Should -Be 'MCP://status/current'
+                $result.resources[0].uri | Should -Be 'file://status/current'
                 $result.resources[0].uri | Should -Not -Match '\\'
             }
         }
@@ -180,7 +172,7 @@ Describe 'Get-ResourceList' -Tag 'Unit' {
                 $result = Get-ResourceList -MCPRoot $mcpRoot
 
                 # Assert
-                $result.resources[0].uri | Should -Be 'MCP://document'
+                $result.resources[0].uri | Should -Be 'file://document'
                 $result.resources[0].uri | Should -Not -Match '\.md$'
             }
         }
@@ -188,89 +180,52 @@ Describe 'Get-ResourceList' -Tag 'Unit' {
 
     Context 'MIME Type Detection' {
 
-        It 'should detect text/plain for .txt files' {
-            InModuleScope MCP.SDK {
+        It 'should detect <ExpectedMimeType> for <Extension> files' -TestCases @(
+            @{ Extension = ".txt"; Content = "Text"; ExpectedMimeType = "text/plain" }
+            @{ Extension = ".md"; Content = "# Markdown"; ExpectedMimeType = "text/markdown" }
+            @{ Extension = ".json"; Content = '{"key":"value"}'; ExpectedMimeType = "application/json" }
+            @{ Extension = ".xml"; Content = "<root></root>"; ExpectedMimeType = "application/xml" }
+            @{ Extension = ".html"; Content = "<html></html>"; ExpectedMimeType = "text/html" }
+            @{ Extension = ".jpg"; Content = "binary"; ExpectedMimeType = "image/jpeg" }
+            @{ Extension = ".jpeg"; Content = "binary"; ExpectedMimeType = "image/jpeg" }
+            @{ Extension = ".png"; Content = "binary"; ExpectedMimeType = "image/png" }
+            @{ Extension = ".gif"; Content = "binary"; ExpectedMimeType = "image/gif" }
+        ) {
+            param($Extension, $Content, $ExpectedMimeType)
+
+            InModuleScope MCP.SDK -Parameters ([hashtable]$PSBoundParameters) {
                 # Arrange
-                $mcpRoot = Join-Path $TestDrive 'txt-server'
+                $mcpRoot = Join-Path $TestDrive "mime-server-$(Get-Random)"
                 $resourcesPath = Join-Path $mcpRoot 'resources'
                 New-Item -Path $resourcesPath -ItemType Directory -Force | Out-Null
-                New-TestResource -Path (Join-Path $resourcesPath 'file.txt') -Content "Text"
+                New-TestResource -Path (Join-Path $resourcesPath "file$Extension") -Content $Content
 
                 # Act
                 $result = Get-ResourceList -MCPRoot $mcpRoot
 
                 # Assert
-                $result.resources[0].mimeType | Should -Be 'text/plain'
+                $result.resources[0].mimeType | Should -Be $ExpectedMimeType
             }
         }
 
-        It 'should detect text/markdown for .md files' {
-            InModuleScope MCP.SDK {
+        It 'should detect application/yaml for <Extension> files' -TestCases @(
+            @{ Extension = ".yaml"; Content = "key: value" }
+            @{ Extension = ".yml"; Content = "key: value" }
+        ) {
+            param($Extension, $Content)
+
+            InModuleScope MCP.SDK -Parameters ([hashtable]$PSBoundParameters) {
                 # Arrange
-                $mcpRoot = Join-Path $TestDrive 'md-server'
+                $mcpRoot = Join-Path $TestDrive "yaml-server-$(Get-Random)"
                 $resourcesPath = Join-Path $mcpRoot 'resources'
                 New-Item -Path $resourcesPath -ItemType Directory -Force | Out-Null
-                New-TestResource -Path (Join-Path $resourcesPath 'file.md') -Content "# Markdown"
-
-                # Act
-                $result = Get-ResourceList -MCPRoot $mcpRoot
-
-                # Assert
-                $result.resources[0].mimeType | Should -Be 'text/markdown'
-            }
-        }
-
-        It 'should detect application/json for .json files' {
-            InModuleScope MCP.SDK {
-                # Arrange
-                $mcpRoot = Join-Path $TestDrive 'json-server'
-                $resourcesPath = Join-Path $mcpRoot 'resources'
-                New-Item -Path $resourcesPath -ItemType Directory -Force | Out-Null
-                New-TestResource -Path (Join-Path $resourcesPath 'data.json') -Content '{"key":"value"}'
-
-                # Act
-                $result = Get-ResourceList -MCPRoot $mcpRoot
-
-                # Assert
-                $result.resources[0].mimeType | Should -Be 'application/json'
-            }
-        }
-
-        It 'should detect application/yaml for .yaml and .yml files' {
-            InModuleScope MCP.SDK {
-                # Arrange
-                $mcpRoot = Join-Path $TestDrive 'yaml-server'
-                $resourcesPath = Join-Path $mcpRoot 'resources'
-                New-Item -Path $resourcesPath -ItemType Directory -Force | Out-Null
-                New-TestResource -Path (Join-Path $resourcesPath 'config.yaml') -Content 'key: value'
-                New-TestResource -Path (Join-Path $resourcesPath 'config2.yml') -Content 'key: value'
+                New-TestResource -Path (Join-Path $resourcesPath "config$Extension") -Content $Content
 
                 # Act
                 $result = Get-ResourceList -MCPRoot $mcpRoot
 
                 # Assert
                 $result.resources[0].mimeType | Should -Be 'application/yaml'
-                $result.resources[1].mimeType | Should -Be 'application/yaml'
-            }
-        }
-
-        It 'should detect image MIME types' {
-            InModuleScope MCP.SDK {
-                # Arrange
-                $mcpRoot = Join-Path $TestDrive 'image-server'
-                $resourcesPath = Join-Path $mcpRoot 'resources'
-                New-Item -Path $resourcesPath -ItemType Directory -Force | Out-Null
-                New-TestResource -Path (Join-Path $resourcesPath 'photo.jpg') -Content "binary"
-                New-TestResource -Path (Join-Path $resourcesPath 'graphic.png') -Content "binary"
-
-                # Act
-                $result = Get-ResourceList -MCPRoot $mcpRoot
-
-                # Assert
-                $jpgResource = $result.resources | Where-Object { $_.name -eq 'photo' }
-                $pngResource = $result.resources | Where-Object { $_.name -eq 'graphic' }
-                $jpgResource.mimeType | Should -Be 'image/jpeg'
-                $pngResource.mimeType | Should -Be 'image/png'
             }
         }
 
@@ -532,49 +487,34 @@ This is the content of the markdown file.
 
     Context 'Return Structure' {
 
-        It 'should return correct structure for single resource' {
-            InModuleScope MCP.SDK {
-                # Arrange
-                $mcpRoot = Join-Path $TestDrive 'single-server'
-                $resourcesPath = Join-Path $mcpRoot 'resources'
-                New-Item -Path $resourcesPath -ItemType Directory -Force | Out-Null
-                New-TestResource -Path (Join-Path $resourcesPath 'single.txt') -Content "Single"
-
-                # Act
-                $result = Get-ResourceList -MCPRoot $mcpRoot
-
-                # Assert
-                $result | Should -BeOfType [hashtable]
-                $result.resources | Should -Not -BeNullOrEmpty
-                @($result.resources).Count | Should -Be 1
+        It 'should return correct structure for <Description>' -TestCases @(
+            @{
+                Files         = @("single.txt")
+                ExpectedCount = 1
+                Description   = "single resource"
             }
-        }
-
-        It 'should return correct structure for multiple resources' {
-            InModuleScope MCP.SDK {
-                # Arrange
-                $mcpRoot = Join-Path $TestDrive 'multiple-server'
-                $resourcesPath = Join-Path $mcpRoot 'resources'
-                New-Item -Path $resourcesPath -ItemType Directory -Force | Out-Null
-                New-TestResource -Path (Join-Path $resourcesPath 'first.txt') -Content "First"
-                New-TestResource -Path (Join-Path $resourcesPath 'second.json') -Content '{}'
-                New-TestResource -Path (Join-Path $resourcesPath 'third.md') -Content '# Third'
-
-                # Act
-                $result = Get-ResourceList -MCPRoot $mcpRoot
-
-                # Assert
-                $result | Should -BeOfType [hashtable]
-                @($result.resources).Count | Should -Be 3
+            @{
+                Files         = @("first.txt", "second.json", "third.md")
+                ExpectedCount = 3
+                Description   = "multiple resources"
             }
-        }
+            @{
+                Files         = @()
+                ExpectedCount = 0
+                Description   = "no resources"
+            }
+        ) {
+            param($Files, $ExpectedCount)
 
-        It 'should return correct structure when no resources exist' {
-            InModuleScope MCP.SDK {
+            InModuleScope MCP.SDK -Parameters ([hashtable]$PSBoundParameters) {
                 # Arrange
-                $mcpRoot = Join-Path $TestDrive 'noresources-structure'
+                $mcpRoot = Join-Path $TestDrive "structure-server-$(Get-Random)"
                 $resourcesPath = Join-Path $mcpRoot 'resources'
                 New-Item -Path $resourcesPath -ItemType Directory -Force | Out-Null
+
+                foreach ($file in $Files) {
+                    New-TestResource -Path (Join-Path $resourcesPath $file) -Content "Content"
+                }
 
                 # Act
                 $result = Get-ResourceList -MCPRoot $mcpRoot
@@ -582,44 +522,48 @@ This is the content of the markdown file.
                 # Assert
                 $result | Should -BeOfType [hashtable]
                 $result.Keys | Should -Contain 'resources'
-                @($result.resources).Count | Should -Be 0
+                @($result.resources).Count | Should -Be $ExpectedCount
+                if ($ExpectedCount -gt 0) {
+                    $result.resources | Should -Not -BeNullOrEmpty
+                }
             }
         }
     }
 
     Context 'Edge Cases and Error Handling' {
 
-        It 'should handle resources with multiple dots in filename' {
-            InModuleScope MCP.SDK {
-                # Arrange
-                $mcpRoot = Join-Path $TestDrive 'dots-server'
-                $resourcesPath = Join-Path $mcpRoot 'resources'
-                New-Item -Path $resourcesPath -ItemType Directory -Force | Out-Null
-                New-TestResource -Path (Join-Path $resourcesPath 'file.name.with.dots.txt') -Content "Test"
-
-                # Act
-                $result = Get-ResourceList -MCPRoot $mcpRoot
-
-                # Assert
-                $result.resources[0].name | Should -Be 'file.name.with.dots'
-                $result.resources[0].uri | Should -Be 'MCP://file.name.with.dots'
+        It 'should handle <Description>' -TestCases @(
+            @{
+                FileName     = "file.name.with.dots.txt"
+                SubPath      = ""
+                ExpectedName = "file.name.with.dots"
+                ExpectedUri  = "file://file.name.with.dots"
+                Description  = "resources with multiple dots in filename"
             }
-        }
+            @{
+                FileName     = "deep.txt"
+                SubPath      = "level1\level2\level3"
+                ExpectedName = "deep"
+                ExpectedUri  = "file://level1/level2/level3/deep"
+                Description  = "deeply nested resources"
+            }
+        ) {
+            param($FileName, $SubPath, $ExpectedName, $ExpectedUri)
 
-        It 'should handle deeply nested resources' {
-            InModuleScope MCP.SDK {
+            InModuleScope MCP.SDK -Parameters ([hashtable]$PSBoundParameters) {
                 # Arrange
-                $mcpRoot = Join-Path $TestDrive 'deep-server'
+                $mcpRoot = Join-Path $TestDrive "edge-server-$(Get-Random)"
                 $resourcesPath = Join-Path $mcpRoot 'resources'
-                $deepPath = Join-Path $resourcesPath 'level1\level2\level3'
-                New-Item -Path $deepPath -ItemType Directory -Force | Out-Null
-                New-TestResource -Path (Join-Path $deepPath 'deep.txt') -Content "Deep"
+                $targetPath = if ($SubPath) { Join-Path $resourcesPath $SubPath } else { $resourcesPath }
+                New-Item -Path $targetPath -ItemType Directory -Force | Out-Null
+                New-TestResource -Path (Join-Path $targetPath $FileName) -Content "Test"
 
                 # Act
                 $result = Get-ResourceList -MCPRoot $mcpRoot
 
                 # Assert
-                $result.resources[0].uri | Should -Be 'MCP://level1/level2/level3/deep'
+                $result.resources[0].name | Should -Be $ExpectedName
+                $result.resources[0].uri | Should -Be $ExpectedUri
             }
         }
 

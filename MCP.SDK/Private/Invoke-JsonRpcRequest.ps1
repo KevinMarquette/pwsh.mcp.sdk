@@ -36,6 +36,9 @@ function Invoke-JsonRpcRequest {
                 "resources/list" {
                     Get-ResourceList -MCPRoot $MCPRoot
                 }
+                "resources/read" {
+                    Get-Resource -MCPRoot $MCPRoot -Uri $request.params.uri
+                }
                 default {
                     throw [System.NotImplementedException]::new("Method '$($request.method)' is not implemented.")
                 }

@@ -5,8 +5,8 @@ function Get-ResourceList {
     #>
     [CmdletBinding()]
     param(
-        $MCPRoot,
-        $UriPrefix = "MCP://"
+        [string]$MCPRoot,
+        [string]$UriPrefix = "file://"
     )
     $resourcesPath = (Resolve-Path "$MCPRoot/resources").Path
 
@@ -14,12 +14,9 @@ function Get-ResourceList {
 
     $response = @()
     foreach ($resourceFile in $resourceFiles) {
-        # Get Relative Path
+        # Get URI using ConvertTo-ResourceUri
         Write-Verbose "FullName [$($resourceFile.FullName)] ResourcesPath [$($resourcesPath.Length)]"
-        $relativePath = $resourceFile.FullName.Substring($resourcesPath.Length).TrimStart('\', '/')
-        # Remove file extension for name
-        $resourceName = $relativePath.Substring(0, $relativePath.Length - $resourceFile.Extension.Length)
-        $uri = $UriPrefix + $resourceName -replace '\\', '/'
+        $uri = ConvertTo-ResourceUri -FullName $resourceFile.FullName -Root $resourcesPath -UriPrefix $UriPrefix
         # Determine Mime Type
         $mimeType = switch ($resourceFile.Extension.ToLower()) {
             ".txt" { "text/plain" }
