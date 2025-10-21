@@ -1,0 +1,14 @@
+{
+	"servers": {
+		"incident-response": {
+			"type": "stdio",
+			"command": "pwsh",
+			"args": [
+				"-Command",
+				"E:\\AI\\pwsh.mcp.sdk\\MCP.SDK\\start.ps1",
+				"E:\\AI\\pwsh.mcp.sdk\\Examples\\reference-server"
+			]
+		}
+	},
+	"inputs": []
+}
