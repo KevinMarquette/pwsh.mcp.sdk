@@ -2,12 +2,13 @@ function Get-Initialization {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory)]
-        $MCPRoot,
+        [string]$MCPRoot,
+        [string]$ProtocolVersion = "2025-06-18",
         $Name = "LocalMCPServer",
         $Title = "Locally Managed MCP Server"
     )
     $response = [ordered]@{
-        protocolVersion = "2025-06-18"
+        protocolVersion = $ProtocolVersion
         capabilities    = @{}
         serverInfo      = @{
             name    = $Name

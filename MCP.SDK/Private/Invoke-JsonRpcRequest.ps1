@@ -21,7 +21,7 @@ function Invoke-JsonRpcRequest {
         try {
             $result += switch ($request.method) {
                 "initialize" {
-                    Get-Initialization -MCPRoot $MCPRoot
+                    Get-Initialization -MCPRoot $MCPRoot -ProtocolVersion $request.params.protocolVersion
                 }
                 "ping" {
                     @{}
@@ -31,6 +31,9 @@ function Invoke-JsonRpcRequest {
                 }
                 "prompts/list" {
                     Get-PromptList -MCPRoot $MCPRoot
+                }
+                "resources/templates/list" {
+                    @{resourceTemplates=@()}
                 }
                 "resources/list" {
                     Get-ResourceList -MCPRoot $MCPRoot
