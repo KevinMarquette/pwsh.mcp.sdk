@@ -49,7 +49,7 @@ function Invoke-JsonRpcRequest {
                         # Ignore notification messages
                         return
                     }
-                    throw [System.NotImplementedException]::new("Method '$($request.method)' is not implemented.")
+                    throw [System.NotImplementedException]::new("Method '$PSItem' is not implemented.")
                 }
             }
         }
