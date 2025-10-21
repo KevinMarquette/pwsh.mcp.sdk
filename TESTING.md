@@ -76,3 +76,4 @@ It 'should handle <Description>' -TestCases @(
 - **Keep TestCases Simple** as just key value pairs with the validation inside the test. Each testcase in a set should specify all the keys.
 - **Pass parameters explicitly** when combining TestCases with `InModuleScope` using `-Parameters ([hashtable]$PSBoundParameters)`.
 - Use TestDrive: or $testdrive instead of $ENV:TEMP for temporary files
+- Always provide values to mandatory parameters in tests (or powershell will prompt the user for it and hang the test)
