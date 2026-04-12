@@ -133,7 +133,7 @@ To create a new MCP server:
 ### JSON-RPC Protocol
 
 - All requests/responses use JSON-RPC 2.0 format
-- Protocol version: "2024-11-05"
+- Protocol version: "2025-06-18"
 - Errors use code -32603 for internal errors
 
 ### Capability Detection

@@ -112,7 +112,7 @@ Describe 'Invoke-JsonRpcRequest' -Tag 'Unit' {
 
                 # Assert
                 $result.result | Should -Not -BeNullOrEmpty
-                $result.result.protocolVersion | Should -Be "2024-11-05"
+                $result.result.protocolVersion | Should -Be "2025-06-18"
                 $result.result.serverInfo | Should -Not -BeNullOrEmpty
             }
         }
@@ -412,7 +412,7 @@ Describe 'Invoke-JsonRpcRequest' -Tag 'Unit' {
 
                 # Assert
                 $result.Keys | Should -Contain 'error'
-                $result.error.code | Should -Be -32603
+                $result.error.code | Should -Be -32601
                 $result.error.message | Should -Match "not implemented"
             }
         }

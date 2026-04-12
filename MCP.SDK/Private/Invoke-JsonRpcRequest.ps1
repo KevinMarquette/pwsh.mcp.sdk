@@ -21,7 +21,11 @@ function Invoke-JsonRpcRequest {
         try {
             $result += switch ($request.method) {
                 "initialize" {
-                    Get-Initialization -MCPRoot $MCPRoot -ProtocolVersion $request.params.protocolVersion
+                    $initParams = @{ MCPRoot = $MCPRoot }
+                    if ($request.params.protocolVersion) {
+                        $initParams.ProtocolVersion = $request.params.protocolVersion
+                    }
+                    Get-Initialization @initParams
                 }
                 "ping" {
                     @{}
@@ -58,7 +62,6 @@ function Invoke-JsonRpcRequest {
             $result += $_
         }
         # Output the result as a JSON-RPC response
-        $result | ConvertTo-JsonRpcResponse -ID $request.id |
-            ConvertTo-Json -Depth 10 -Compress
+        $result | ConvertTo-JsonRpcResponse -ID $request.id
     }
 }

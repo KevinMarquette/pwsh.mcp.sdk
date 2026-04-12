@@ -25,6 +25,11 @@ function Invoke-Tool {
         throw "Tool script file not found for tool [$Name]"
     }
 
+    # Validate the caller's arguments against the tool's published inputSchema.
+    # Any violations throw an ArgumentException which is surfaced to the client
+    # as a JSON-RPC -32602 Invalid params error by ConvertTo-JsonRpcResponse.
+    Test-ToolParameter -Schema $matchedTool.inputSchema -Parameters $Parameters
+
     # Execute the tool script with parameters
     $isError = $false
     $content = ""

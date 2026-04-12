@@ -24,18 +24,29 @@ function ConvertTo-JsonRpcResponse {
         }
         # handle error records and exceptions
         elseif ($InputObject -is [System.Management.Automation.ErrorRecord] -or $InputObject -is [System.Exception]) {
+            $exception = if ($InputObject -is [System.Management.Automation.ErrorRecord]) {
+                $InputObject.Exception
+            }
+            else {
+                $InputObject
+            }
             $jsonRpcObject.error = @{
                 code    = -32603
                 message = $InputObject.ToString()
             }
-            if ($InputObject -is [System.NotImplementedException]) {
+            if ($exception -is [System.NotImplementedException]) {
                 $jsonRpcObject.error.code = -32601
             }
-            if ($InputObject -is [System.IO.FileNotFoundException]) {
+            elseif ($exception -is [System.IO.FileNotFoundException]) {
                 $jsonRpcObject.error.code = -32602
                 $jsonRpcObject.error.data = @{
-                    uri = $InputObject.FileName
+                    uri = $exception.FileName
                 }
+            }
+            elseif ($exception -is [System.ArgumentException]) {
+                # Schema / parameter validation failure -> JSON-RPC Invalid params
+                $jsonRpcObject.error.code = -32602
+                $jsonRpcObject.error.message = $exception.Message
             }
         }
         # handle everything else as result

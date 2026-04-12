@@ -78,7 +78,7 @@ Describe 'Get-Initialization' -Tag 'Unit' {
 
                 # Assert
                 $result | Should -Not -BeNullOrEmpty
-                $result.protocolVersion | Should -Be '2024-11-05'
+                $result.protocolVersion | Should -Be '2025-06-18'
                 $result.capabilities | Should -BeNullOrEmpty
                 $result.serverInfo | Should -Not -BeNullOrEmpty
             }

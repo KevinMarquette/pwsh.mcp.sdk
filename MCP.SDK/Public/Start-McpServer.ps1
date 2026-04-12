@@ -44,12 +44,13 @@ function Start-McpServer {
             Add-Content -Path $logPath -Value "Received request|$inputJson"
             if ($null -ne $inputJson) {
                 # Process the JSON-RPC request
-                $responseJson = Invoke-JsonRpcRequest -RequestJson $inputJson -MCPRoot $mcpRoot
+                $response = Invoke-JsonRpcRequest -RequestJson $inputJson -MCPRoot $mcpRoot
 
-                if( $null -eq $responseJson ) {
+                if( $null -eq $response ) {
                     continue
                 }
-                # Write the response to standard output
+                # Serialize the response to JSON and write it to standard output
+                $responseJson = $response | ConvertTo-Json -Depth 10 -Compress
                 Add-Content -Path $logPath -Value "Sending response|$responseJson"
                 Out-Console -OutputString $responseJson
             }
