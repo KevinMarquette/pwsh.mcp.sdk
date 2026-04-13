@@ -41,13 +41,20 @@ function Invoke-Tool {
         $content = $_.Exception
     }
 
+    if ($isError) {
+        $text = $content | Out-String
+    }
+    else {
+        $text = $content | ConvertTo-Json -Depth 10 -Compress
+    }
+
     return @{
         result = @{
             isError           = $isError
             content           = @(
                 @{
                     type = "text"
-                    text = $content | Out-String
+                    text = $text
                 }
             )
             structuredContent = $content

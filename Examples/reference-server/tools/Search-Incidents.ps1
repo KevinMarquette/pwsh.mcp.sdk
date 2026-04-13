@@ -5,6 +5,7 @@ Searches for incidents based on various criteria
 .DESCRIPTION
 Searches the incident database using filters for severity, type, status,
 assignee, and date ranges. Returns matching incidents with summary information.
+Best formatted for display in a tabular format.
 
 .EXAMPLE
 Search-Incidents -Severity "High" -Status "Open"
@@ -12,6 +13,14 @@ Search-Incidents -Severity "High" -Status "Open"
 
 [CmdletBinding()]
 param(
+    # Filter by incident ID (supports wildcard match)
+    [Parameter()]
+    [string]$IncidentId,
+
+    # Filter by text in the incident description (supports wildcard match)
+    [Parameter()]
+    [string]$Description,
+
     # Filter by incident severity
     [Parameter()]
     [ValidateSet('Low', 'Medium', 'High', 'Critical')]
@@ -53,6 +62,12 @@ $allIncidents = Get-ChildItem -Path $incidentsPath -Filter "*.json" -ErrorAction
 $filteredIncidents = $allIncidents | Where-Object {
     $incident = $_
 
+    # Apply incident ID filter
+    if ($IncidentId -and $incident.id -notlike "*$IncidentId*") { return $false }
+
+    # Apply description filter
+    if ($Description -and $incident.description -notlike "*$Description*") { return $false }
+
     # Apply severity filter
     if ($Severity -and $incident.severity -ne $Severity) { return $false }
 
@@ -79,6 +94,8 @@ $results = $filteredIncidents | Select-Object -First $Limit
 # Build response
 @{
     SearchCriteria = @{
+        IncidentId = $IncidentId
+        Description = $Description
         Severity = $Severity
         Type = $Type
         Status = $Status
