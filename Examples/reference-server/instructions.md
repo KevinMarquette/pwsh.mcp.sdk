@@ -25,6 +25,7 @@ You are connected to an incident response management system. Use this server to 
 - `create-incident` - Create new incident records with proper categorization
 - `update-incident-status` - Change incident status and add progress notes
 - `search-incidents` - Find incidents using various filters and criteria
+- `get-incidents` - Get incident by id with all details
 
 ### Resources (Information Sources)
 - `config/severity-levels` - Severity definitions and response time requirements

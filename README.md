@@ -59,13 +59,14 @@ The client launches `pwsh` and speaks JSON-RPC over stdin/stdout:
 ```json
 {
   "mcpServers": {
-    "reference-server": {
+    "incident-tracker-stdio": {
       "command": "pwsh",
       "args": [
-        "-NoProfile",
-        "-File",
-        "<path-to-repo>/MCP.SDK/Start.ps1",
-        "<path-to-repo>/Examples/reference-server"
+        "-NoProfile", 
+        "-NoLogo",
+        "-Command",
+        "E:\\AI\\pwsh.mcp.sdk\\MCP.SDK\\start.ps1",
+        "E:\\AI\\pwsh.mcp.sdk\\Examples\\reference-server"
       ]
     }
   }
@@ -85,7 +86,7 @@ Then point the client at the running endpoint:
 ```json
 {
   "mcpServers": {
-    "reference-server": {
+    "incident-tracker-http": {
       "type": "http",
       "url": "http://localhost:8080/mcp/"
     }
